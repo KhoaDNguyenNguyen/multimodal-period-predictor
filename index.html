@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <title>Khảo sát sức khỏe chu kỳ – SurveyJS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- SurveyJS resources (Default theme) -->
+  <link href="https://unpkg.com/survey-core@2.2.0/survey-core.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/survey-core@2.2.0/survey.core.min.js"></script>
+  <script src="https://unpkg.com/survey-js-ui@2.2.0/survey-js-ui.min.js"></script>
+
+  <!-- Mã khảo sát -->
+  <script src="index.js" defer></script>
+</head>
+<body>
+  <!-- nơi hiển thị biểu mẫu -->
+  <div id="surveyContainer" style="max-width:900px;margin:auto;"></div>
+
+  <!-- nơi hiển thị JSON kết quả -->
+  <div id="resultsContainer" style="display:none;max-width:900px;margin:2rem auto;">
+    <h3>Kết quả JSON:</h3>
+    <pre id="surveyResults"
+         style="white-space:pre-wrap;background:#f5f5f5;padding:1rem;border-radius:6px;"></pre>
+  </div>
+</body>
+</html>
