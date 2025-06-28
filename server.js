@@ -1,30 +1,35 @@
-// server.js  (ES Modules)
-// -------------------------------------------
+
 import express from 'express';
 import cors    from 'cors';
 import dotenv  from 'dotenv';
 import { neon } from '@neondatabase/serverless';
 
-// 1) .env
+
 dotenv.config();
 if (!process.env.DATABASE_URL)
   throw new Error('Missing DATABASE_URL');
 
-// 2) Neon SQL client  (URL KHÔNG có channel_binding)
 const sql = neon(process.env.DATABASE_URL);
 
-// 3) App setup
+
 const app = express();
 app.use(express.json({ limit: '1mb' }));
 
-// 4) CORS (tự lo OPTIONS, không cần route riêng)
 const allowedOrigins = [
   'http://127.0.0.1:5500',
-  'http://localhost:5500'
-];
+  'http://localhost:5500',
+  process.env.FRONTEND_URL       
+].filter(Boolean);
 app.use(cors({ origin: allowedOrigins }));
 
-// 5) Routes
+
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
+app.use(express.static(__dirname));       
+app.get('/', (_,res)=>res.sendFile(path.join(__dirname,'index.html')));
+
+
 app.get('/api/health',  (req, res) => res.json({ status: 'ok' }));
 
 app.post('/api/survey', async (req, res) => {
@@ -41,13 +46,12 @@ app.post('/api/survey', async (req, res) => {
 });
 
 
-// 6) Start server
+
 const PORT   = process.env.PORT ?? 3000;
 const server = app.listen(PORT, () =>
   console.log(`✈️  API listening on http://localhost:${PORT}`)
 );
 
-// Shutdown gọn gàng
 ['SIGINT','SIGTERM'].forEach(sig =>
   process.on(sig, () => {
     console.log('\n⏹  Closing server...'); server.close(() => process.exit(0));
