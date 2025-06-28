@@ -294,7 +294,7 @@ function displayResults(sender) {
   const out = buildOutput(sender.data);
 
 
-  fetch('http://127.0.0.1:3000/api/survey', {  
+  fetch('/api/survey', { 
     method : 'POST',
     headers: { 'Content-Type': 'application/json' },
     body   : JSON.stringify(out)
